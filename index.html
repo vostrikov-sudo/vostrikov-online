@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vostrikov Game — две игры в браузере</title>
+<meta name="description" content="Vostrikov Game: платформер с заданиями и танковый бой с дронами. Копи монеты, покупай улучшения.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css"></head><body>
+<nav><b>VG</b><a href="#games">Игры</a><a href="#quiz">Викторина</a><a href="#profile">Профиль</a><a href="#store">Магазин</a><span class="gold">Монеты: <span class="coins">0</span></span></nav>
+<header class="hero" style="background-image:url(assets/hero.jpg)"><div class="in">
+<h1>VOSTRIKOV GAME</h1><p>Беги, прыгай и выполняй задания. Или садись в танк и отбивай волны врагов. Монеты из игр тратишь в магазине.</p>
+<a class="btn" href="#games">Играть</a></div></header>
+<section class="rules" style="background-image:url(assets/rules.jpg)"><div class="card">
+<h2>Правила игры</h2>
+<div class="cols"><div><h3>Раннер «Побег»</h3>
+<ul><li>Добеги до флага. Жизней три.</li>
+<li>Прыгай на красных «подозрительных» сверху. Касание сбоку или шипы отнимают жизнь.</li>
+<li>Три станции с заданиями, как в Among Us: подойди и нажми E. Без всех заданий флаг не засчитается.</li>
+<li>Чем дольше держишь прыжок, тем выше. Очки: монета 10, враг 50, задание 100.</li></ul></div>
+<div><h3>Бой «Стальная волна»</h3>
+<ul><li>Выживай как можно дольше, волны растут.</li>
+<li>Оружие: пушка, пулемёт, самонаводящиеся ракеты.</li>
+<li>Дрон-помощник (Q) сам стреляет по врагам.</li>
+<li>Вражеские дроны таранят и взрываются. Ремкомплекты выпадают из танков.</li></ul></div></div>
+<h3>Блиц по истории</h3><p>Выбери класс от 5 до 9. В раунде 10 вопросов по 12 секунд на ответ.</p>
+<p><b>Миры раннера:</b> Станция, Лавовый мир (больше шипов и быстрые враги), Ледяной мир (скользко), Космос (низкая гравитация).</p>
+<p><b>Монеты:</b> за каждые 10 очков в игре получаешь 1 монету. Трать их в магазине.</p>
+</div></section>
+<main id="games">
+<section><h2>Раннер «Побег»</h2><p>Платформер в духе Mario с заданиями из Among Us.</p>
+<p>Четыре мира. Следующий открывается после победы в предыдущем:</p><div id="wl" class="wl"></div>
+<canvas id="rc" width="900" height="450"></canvas>
+<button class="btn" id="rs">Играть / заново</button>
+<p class="keys"><b>Управление:</b> A/D или стрелки: бег. Пробел, W или ↑: прыжок. E: задание. Esc: закрыть задание. R: заново.</p></section>
+<section><h2>Бой «Стальная волна»</h2><p>Танки, три вида оружия и дроны. Продержись как можно дольше.</p>
+<canvas id="bc" width="900" height="540"></canvas>
+<button class="btn" id="bs">Играть / заново</button>
+<p class="keys"><b>Управление:</b> WASD: движение. Мышь: прицел. Левая кнопка: огонь. 1/2/3: оружие. Q: дрон. R: заново.</p></section>
+<section id="quiz"><h2>Блиц по истории</h2><p>10 вопросов, на каждый 12 секунд. Выбери свой класс. Быстрые ответы и серия верных ответов дают больше очков. Вопросы и варианты ответов каждый раз собираются заново и повторяются, только когда закончится весь банк класса.</p>
+<div id="grades" class="wl"><button class="btn s" data-g="5">5 класс</button><button class="btn s" data-g="6">6 класс</button><button class="btn s" data-g="7">7 класс</button><button class="btn s" data-g="8">8 класс</button><button class="btn s" data-g="9">9 класс</button></div>
+<div class="qz"><div class="track"><div id="qb"></div></div><h3 id="qq">Выбери класс, чтобы начать</h3><div id="qo" class="qo"></div><p id="qsc" class="keys">Очки: 0</p></div></section>
+<section id="profile"><h2>Профиль игрока</h2>
+<div class="prof"><img id="hp" src="assets/hero.png" alt="Герой">
+<div><label>Имя игрока<br><input id="pn" maxlength="16"></label>
+<p>Монеты: <b class="coins gold">0</b></p>
+<p>Рекорд раннера: <b id="pr">0</b></p>
+<p>Рекорд боя: <b id="pb">0</b></p>
+<p>Сыграно игр: <b id="pg">0</b></p>
+<p>Рекорды викторин: <b id="pq">—</b></p>
+<p class="keys">Прогресс хранится в браузере на этом устройстве.</p></div></div></section>
+<section id="store"><h2>Магазин</h2><p>Улучшения работают в играх сразу. Скины можно надевать и снимать.</p>
+<div id="shop" class="shop"></div></section>
+</main>
+<footer>Vostrikov Game. Лучше всего играть с компьютера: клавиатура и мышь.</footer>
+<script>
+const K={},H=new Image();H.src='assets/hero.png';let A=null;
+addEventListener('keydown',e=>{K[e.code]=1;if(A&&/^(Space|Arrow)/.test(e.code))e.preventDefault()});
+addEventListener('keyup',e=>K[e.code]=0);addEventListener('blur',()=>{for(const k in K)K[k]=0});
+</script>
+<script src="meta.js"></script><script src="runner.js"></script><script src="battle.js"></script><script src="quiz.js"></script>
+</body></html>
